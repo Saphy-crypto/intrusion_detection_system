@@ -23,6 +23,7 @@ from tqdm import tqdm
 import warnings
 import glob
 import os
+import time
 from datetime import datetime
 
 warnings.filterwarnings('ignore')
@@ -148,14 +149,21 @@ class NetworkIntrusionDetector:
                 X_train_use = self.X_train
                 X_test_use = self.X_test
             
-            # train model with progress indication
+            # train model with timing
             print("Training in progress...")
+            training_start_time = time.time()
             model.fit(X_train_use, self.y_train)
+            training_end_time = time.time()
+            training_time = training_end_time - training_start_time
             print("Training completed!")
             
-            # make predictions
+            # make predictions with timing
             print("Making predictions...")
+            prediction_start_time = time.time()
             y_pred = model.predict(X_test_use)
+            prediction_end_time = time.time()
+            total_prediction_time = prediction_end_time - prediction_start_time
+            prediction_time_per_sample = (total_prediction_time / len(self.X_test)) * 1000  # milliseconds per sample
             
             #calculate metrics
             accuracy = accuracy_score(self.y_test, y_pred)
@@ -170,13 +178,17 @@ class NetworkIntrusionDetector:
                 'precision': precision,
                 'recall': recall,
                 'f1_score': f1,
-                'predictions': y_pred
+                'predictions': y_pred,
+                'training_time': training_time,
+                'prediction_time_per_sample': prediction_time_per_sample
             }
             
             print(f"Accuracy: {accuracy:.4f}")
             print(f"Precision: {precision:.4f}")
             print(f"Recall: {recall:.4f}")
             print(f"F1-Score: {f1:.4f}")
+            print(f"Training time: {training_time:.2f} seconds")
+            print(f"Prediction time per sample: {prediction_time_per_sample:.4f} milliseconds")
             
     def generate_detailed_report(self):
         
@@ -243,7 +255,9 @@ class NetworkIntrusionDetector:
                 'Accuracy': results['accuracy'],
                 'Precision': results['precision'],
                 'Recall': results['recall'],
-                'F1_Score': results['f1_score']
+                'F1_Score': results['f1_score'],
+                'Training_Time_Seconds': results['training_time'],
+                'Prediction_Time_Per_Sample_Ms': results['prediction_time_per_sample']
             }
             for name, results in self.results.items()
         ])
@@ -252,6 +266,40 @@ class NetworkIntrusionDetector:
         filename = f"intrusion_detection_results_{timestamp}.csv"
         results_df.to_csv(filename, index=False)
         print(f"\nResults saved to: {filename}")
+        
+        # Save feature importances for Random Forest
+        self.save_feature_importances(timestamp)
+        
+    def save_feature_importances(self, timestamp):
+        
+        #Save feature importances for Random Forest to separate CSV file
+        
+        if 'Random Forest' in self.results:
+            rf_model = self.results['Random Forest']['model']
+            feature_names = self.X_train.columns
+            importances = rf_model.feature_importances_
+            
+            # Create list of feature importance tuples and sort by importance
+            feature_importance_list = list(zip(feature_names, importances))
+            feature_importance_list.sort(key=lambda x: x[1], reverse=True)
+            
+            # Get top 10 most important features
+            top_10_features = feature_importance_list[:10]
+            
+            # Create DataFrame for feature importances
+            importance_df = pd.DataFrame([
+                {
+                    'rank': i + 1,
+                    'feature_name': feature,
+                    'importance_score': importance
+                }
+                for i, (feature, importance) in enumerate(top_10_features)
+            ])
+            
+            # Save to CSV
+            importance_filename = f"feature_importances_{timestamp}.csv"
+            importance_df.to_csv(importance_filename, index=False)
+            print(f"Feature importances saved to: {importance_filename}")
         
     def plot_results(self):
         
