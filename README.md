@@ -1,4 +1,4 @@
-# Machine Learning-Based Network Intrusion Detection System
+# Machine Learning Based Network Intrusion Detection System
 
 ## Overview
 
