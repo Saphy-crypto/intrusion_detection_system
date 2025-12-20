@@ -2,7 +2,35 @@
 
 ## Overview
 
-This project implements a network intrusion detection system using machine learning algorithms to detect various types of cyberattacks in network traffic. The system is designed to identify anomalous network behavior including DDoS attacks, port scans, infiltration attempts, and web attacks.
+This project implements a network intrusion detection system using machine learning algorithms to detect various types of cyberattacks in network traffic. The system is designed to identify anomalous network behavior including ddos attacks, port scans, infiltration attempts, and web attacks.
+
+## Installation and Usage
+
+### Requirements
+```bash
+pip install -r requirements.txt
+```
+
+### Running the Analysis
+```python
+python intrusion_detection_system.py
+```
+
+### Expected Output
+1. **Dataset Statistics**: Information about loaded data and class distributions
+2. **Model Training Progress**: Real time updates during training phase
+3. **Performance Comparison**: Comprehensive metrics for all 6 algorithms
+4. **Best Model Selection**: Automatic identification of optimal algorithm
+5. **Feature Analysis**: Most important network characteristics for detection
+6. **Results Export**: csv file with detailed performance metrics
+
+## Results and Performance
+
+### Expected Performance Ranges
+- **Accuracy**: 95-99% (depending on algorithm and attack type)
+- **Precision**: 90-98% (low false positive rates)
+- **Recall**: 90-97% (high attack detection rates)
+- **F1-Score**: 92-98% (balanced precision/recall)
 
 ## Why This Matters for Cybersecurity
 
@@ -15,9 +43,9 @@ This project implements a network intrusion detection system using machine learn
 ### Technical Significance
 
 - Uses **traditional ML only** (no deep learning) more interpretable and faster for real time deployment
-- **Multi-algorithm comparison** - evaluates 6 different ML approaches to find optimal solution
-- **Practical implementation** - ready for integration into existing network monitoring systems
-- **Comprehensive evaluation** - includes all standard cybersecurity metrics
+- **Multi-algorithm comparison** : evaluates 6 different ML approaches to find optimal solution
+- **Practical implementation** : ready for integration into existing network monitoring systems
+- **Comprehensive evaluation** : includes all standard cybersecurity metrics
 
 ## Dataset: CICIDS2017
 
@@ -77,33 +105,6 @@ The system uses the CICIDS2017 dataset, a collection of network traffic data tha
 - **Parallel Processing**: Utilizes multiple CPU cores for faster training
 - **Batch Processing**: Can handle streaming data for real time detection
 
-## Installation and Usage
-
-### Requirements
-```bash
-pip install -r requirements.txt
-```
-
-### Running the Analysis
-```python
-python intrusion_detection_system.py
-```
-
-### Expected Output
-1. **Dataset Statistics**: Information about loaded data and class distributions
-2. **Model Training Progress**: Real time updates during training phase
-3. **Performance Comparison**: Comprehensive metrics for all 6 algorithms
-4. **Best Model Selection**: Automatic identification of optimal algorithm
-5. **Feature Analysis**: Most important network characteristics for detection
-6. **Results Export**: CSV file with detailed performance metrics
-
-## Results and Performance
-
-### Expected Performance Ranges
-- **Accuracy**: 95-99% (depending on algorithm and attack type)
-- **Precision**: 90-98% (low false positive rates)
-- **Recall**: 90-97% (high attack detection rates)
-- **F1-Score**: 92-98% (balanced precision/recall)
 
 ### Real world Application Scenarios
 
@@ -150,6 +151,4 @@ python intrusion_detection_system.py
 - **Performance Optimization**: Balanced accuracy and computational efficiency
 - **Operational Integration**: Seamless integration with existing security infrastructure
 
----
 
-This intrusion detection system represents a practical implementation of machine learning for cybersecurity, specifically designed to meet the needs of modern network infrastructure while maintaining the reliability required for critical security applications.

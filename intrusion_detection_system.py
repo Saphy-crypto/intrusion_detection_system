@@ -1,13 +1,4 @@
 #!/usr/bin/env python3
-"""
-Machine Learning Based Network Intrusion Detection System
-
-This system implements multiple classical ML algorithms to detect network anomalies
-including DDoS attacks, port scans, infiltration, and web attacks in network traffic.
-
-Dataset: CICIDS2017 - a dataset for intrusion detection evaluation
-"""
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,7 +20,7 @@ from datetime import datetime
 warnings.filterwarnings('ignore')
 
 class NetworkIntrusionDetector:
-    # Network intrusion detection system using multiple ML algorithms
+    #Network intrusion detection system using multiple ML algorithms
     def __init__(self, data_path="Datasets/"):
         self.data_path = data_path
         self.data = None
@@ -62,7 +53,7 @@ class NetworkIntrusionDetector:
         self.data = pd.concat(dataframes, ignore_index=True)
         print(f"Combined dataset shape: {self.data.shape}")
         
-        # display label distribution
+        #display label distribution
         print("\nLabel distribution:")
         print(self.data['Label'].value_counts())
         
@@ -70,13 +61,13 @@ class NetworkIntrusionDetector:
         #Clean and preprocess the data for ML models
         print("\nPreprocessing data...")
         
-        # handle missing values
+        #handle missing values
         print(f"Missing values before cleaning: {self.data.isnull().sum().sum()}")
         
-        # replace infinite values with NaN
+        #replace infinite values with NaN
         self.data.replace([np.inf, -np.inf], np.nan, inplace=True)
         
-        # fill missing values with median for numerical columns
+        #fill missing values with median for numerical columns
         numerical_cols = self.data.select_dtypes(include=[np.number]).columns
         self.data[numerical_cols] = self.data[numerical_cols].fillna(self.data[numerical_cols].median())
         
@@ -109,7 +100,7 @@ class NetworkIntrusionDetector:
         
     def initialize_models(self):
         
-        #initialize all ML models with optimized parameters
+        #initialize all ml models with optimized parameters
         print("\nInitializing ML models...")
         self.models = {
             'Random Forest': RandomForestClassifier(
@@ -141,7 +132,7 @@ class NetworkIntrusionDetector:
         for name, model in tqdm(self.models.items(), desc="Training models"):
             print(f"\n--- Training {name} ---")
             
-            # choose the correct feature scaling
+            #choose the correct feature scaling
             if name in ['SVM', 'Logistic Regression']:
                 X_train_use = self.X_train_scaled
                 X_test_use = self.X_test_scaled
@@ -149,7 +140,7 @@ class NetworkIntrusionDetector:
                 X_train_use = self.X_train
                 X_test_use = self.X_test
             
-            # train model with timing
+            #train model with timing
             print("Training in progress...")
             training_start_time = time.time()
             model.fit(X_train_use, self.y_train)
@@ -157,13 +148,13 @@ class NetworkIntrusionDetector:
             training_time = training_end_time - training_start_time
             print("Training completed!")
             
-            # make predictions with timing
+            #make predictions with timing
             print("Making predictions...")
             prediction_start_time = time.time()
             y_pred = model.predict(X_test_use)
             prediction_end_time = time.time()
             total_prediction_time = prediction_end_time - prediction_start_time
-            prediction_time_per_sample = (total_prediction_time / len(self.X_test)) * 1000  # milliseconds per sample
+            prediction_time_per_sample = (total_prediction_time / len(self.X_test)) * 1000  #milliseconds per sample
             
             #calculate metrics
             accuracy = accuracy_score(self.y_test, y_pred)
@@ -221,7 +212,7 @@ class NetworkIntrusionDetector:
         print(f"\n3. DETAILED CLASSIFICATION REPORT - {best_model_name}")
         print("-" * 60)
         
-        # get label names
+        #get label names
         label_names = self.label_encoder.classes_
         print("\nClass Distribution in Test Set:")
         unique, counts = np.unique(self.y_test, return_counts=True)
@@ -232,7 +223,7 @@ class NetworkIntrusionDetector:
         print(classification_report(self.y_test, best_model_results['predictions'], 
                                   target_names=label_names))
         
-        # feature importance for tree based models
+        #feature importance for tree based models
         if best_model_name in ['Random Forest']:
             print(f"\n4. TOP 10 MOST IMPORTANT FEATURES - {best_model_name}")
             print("-" * 60)
@@ -267,26 +258,26 @@ class NetworkIntrusionDetector:
         results_df.to_csv(filename, index=False)
         print(f"\nResults saved to: {filename}")
         
-        # Save feature importances for Random Forest
+        #save feature importances for Random Forest
         self.save_feature_importances(timestamp)
         
     def save_feature_importances(self, timestamp):
         
-        #Save feature importances for Random Forest to separate CSV file
+        #save feature importances for Random Forest to separate CSV file
         
         if 'Random Forest' in self.results:
             rf_model = self.results['Random Forest']['model']
             feature_names = self.X_train.columns
             importances = rf_model.feature_importances_
             
-            # Create list of feature importance tuples and sort by importance
+            #create list of feature importance tuples and sort by importance
             feature_importance_list = list(zip(feature_names, importances))
             feature_importance_list.sort(key=lambda x: x[1], reverse=True)
             
-            # Get top 10 most important features
+            #get top 10 most important features
             top_10_features = feature_importance_list[:10]
             
-            # Create DataFrame for feature importances
+            #create DataFrame for feature importances
             importance_df = pd.DataFrame([
                 {
                     'rank': i + 1,
@@ -296,7 +287,7 @@ class NetworkIntrusionDetector:
                 for i, (feature, importance) in enumerate(top_10_features)
             ])
             
-            # Save to CSV
+            #save to cvs
             importance_filename = f"feature_importances_{timestamp}.csv"
             importance_df.to_csv(importance_filename, index=False)
             print(f"Feature importances saved to: {importance_filename}")
@@ -307,7 +298,7 @@ class NetworkIntrusionDetector:
         metrics = ['accuracy', 'precision', 'recall', 'f1_score']
         models = list(self.results.keys())
         
-        # prepare data for plotting
+        #prepare data for plotting
         data_for_plot = []
         for model in models:
             for metric in metrics:
@@ -319,7 +310,7 @@ class NetworkIntrusionDetector:
         
         plot_df = pd.DataFrame(data_for_plot)
         
-        # create plot
+        #create plot
         plt.figure(figsize=(15, 8))
         sns.barplot(data=plot_df, x='Model', y='Score', hue='Metric')
         plt.title('Network Intrusion Detection System - Model Performance Comparison')
@@ -360,6 +351,6 @@ class NetworkIntrusionDetector:
 
 
 if __name__ == "__main__":
-    # initialize and run the intrusion detection system
+    #initialize and run the intrusion detection system
     detector = NetworkIntrusionDetector()
     detector.run_full_analysis()
