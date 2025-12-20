@@ -66,7 +66,7 @@ The system uses the CICIDS2017 dataset, a collection of network traffic data tha
 1. **Cross-Validation**: Ensures robust performance estimates
 2. **Stratified Splitting**: Maintains class balance in train/test sets
 3. **Hyperparameter Optimization**: Configured for optimal performance
-4. **Multi-Metric Evaluation**: Uses accuracy, precision, recall, and F1-score
+4. **Multi Metric Evaluation**: Uses accuracy, precision, recall, and F1-score
 
 
 
@@ -124,7 +124,7 @@ python intrusion_detection_system.py
 
 ### Model Optimization
 - **Hyperparameter Tuning**: Grid search for optimal algorithm parameters
-- **Cross-Validation**: 5-fold validation for robust performance estimation
+- **Cross Validation**: 5-fold validation for robust performance estimation
 - **Feature Selection**: Automated removal of irrelevant or redundant features
 - **Ensemble Methods**: Combination of multiple algorithms for improved accuracy
 
