@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 ### Running the Analysis
 ```python
-python intrusion_detection_system.py
+python run_analysis.py
 ```
 
 ### Expected Output
@@ -42,10 +42,10 @@ python intrusion_detection_system.py
 
 ### Technical Significance
 
-- Uses **traditional ML only** (no deep learning) more interpretable and faster for real time deployment
-- **Multi-algorithm comparison** : evaluates 6 different ML approaches to find optimal solution
-- **Practical implementation** : ready for integration into existing network monitoring systems
-- **Comprehensive evaluation** : includes all standard cybersecurity metrics
+- Uses **traditional ML only** (no deep learning): more interpretable and faster for real time deployment
+- **Multi-algorithm comparison**: evaluates 6 different ML approaches to find optimal solution
+- **Practical implementation**: ready for integration into existing network monitoring systems
+- **Comprehensive evaluation**: includes all standard cybersecurity metrics
 
 ## Dataset: CICIDS2017
 
